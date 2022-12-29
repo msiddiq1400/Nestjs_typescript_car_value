@@ -10,8 +10,12 @@ import { Report } from './reports/report.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
+      type: 'mysql',
+      database: 'car_value',
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'root',
+      password: '12341234',
       entities: [User, Report],
       synchronize: true,
     }),
