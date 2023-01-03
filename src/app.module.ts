@@ -1,3 +1,4 @@
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MiddlewareConsumer, Module, ValidationPipe } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,15 +13,24 @@ const cookieSession = require('cookie-session');
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      database: 'car_value',
-      host: '127.0.0.1',
-      port: 3306,
-      username: 'root',
-      password: '12341234',
-      entities: [User, Report],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'mysql',
+          database: config.get<string>('DB_NAME'),
+          host: '127.0.0.1',
+          port: 3306,
+          username: 'root',
+          password: '12341234',
+          entities: [User, Report],
+          synchronize: true,
+        };
+      },
     }),
     UsersModule,
     ReportsModule,
