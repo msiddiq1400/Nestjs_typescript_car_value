@@ -6,8 +6,6 @@ import { UsersService } from './users.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
-  let userService: UsersService;
-  let authService: AuthService;
 
   let fakeUserService: Partial<UsersService>;
   let fakeAuthService: Partial<AuthService>;
@@ -41,10 +39,6 @@ describe('UsersController', () => {
         { provide: AuthService, useValue: fakeAuthService },
       ],
     }).compile();
-
-    userService = module.get(UsersService);
-    authService = module.get(AuthService);
-
     controller = module.get<UsersController>(UsersController);
   });
 
